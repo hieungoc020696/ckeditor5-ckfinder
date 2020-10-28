@@ -70,7 +70,7 @@ export default class CKFinderCommand extends Command {
 		// Cache the user-defined onInit method
 		const originalOnInit = options.onInit;
 
-		const origin = options.origin;
+		const origin = options.origin
 
 		// Pass the lang code to the CKFinder if not defined by user.
 		if ( !options.language ) {
@@ -99,11 +99,13 @@ export default class CKFinderCommand extends Command {
 
 				for ( const image of images ) {
 					const url = image.getUrl();
-					imagesUrls.push( url ? `${origin}${url}` : finder.request( 'file:getProxyUrl', { file: image } ) );
+					imagesUrls.push( url ? url : finder.request( 'file:getProxyUrl', { file: image } ) );
 				}
-				console.log('image url ======>', imagesUrls)
+
 				if ( imagesUrls.length ) {
-					insertImages( editor, imagesUrls);
+					insertImages( editor, imagesUrls.map(url => {
+						origin ? `${origin}${url}`: url
+					}));
 				}
 			} );
 
