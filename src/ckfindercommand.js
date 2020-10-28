@@ -70,6 +70,8 @@ export default class CKFinderCommand extends Command {
 		// Cache the user-defined onInit method
 		const originalOnInit = options.onInit;
 
+		const origin = options.origin
+
 		// Pass the lang code to the CKFinder if not defined by user.
 		if ( !options.language ) {
 			options.language = editor.locale.uiLanguage;
@@ -102,7 +104,9 @@ export default class CKFinderCommand extends Command {
 				}
 
 				if ( imagesUrls.length ) {
-					insertImages( editor, imagesUrls );
+					insertImages( editor, imagesUrls.map(url => {
+						origin ? `${origin}${url}`: url
+					}));
 				}
 			} );
 
@@ -121,7 +125,7 @@ export default class CKFinderCommand extends Command {
 					return;
 				}
 
-				insertImages( editor, [ resizedUrl ] );
+				insertImages( editor, [ origin ? `${origin}${resizedUrl}`: resizedUrl ] );
 			} );
 		};
 
@@ -144,6 +148,5 @@ function insertImages( editor, urls ) {
 
 		return;
 	}
-
 	editor.execute( 'imageInsert', { source: urls } );
 }
