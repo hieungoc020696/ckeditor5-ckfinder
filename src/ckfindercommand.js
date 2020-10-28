@@ -101,7 +101,7 @@ export default class CKFinderCommand extends Command {
 					const url = image.getUrl();
 					imagesUrls.push( url ? `${origin}${url}` : finder.request( 'file:getProxyUrl', { file: image } ) );
 				}
-
+				console.log('image url ======>', imagesUrls)
 				if ( imagesUrls.length ) {
 					insertImages( editor, imagesUrls);
 				}
